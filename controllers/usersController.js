@@ -2,7 +2,7 @@ const User = require('../models/User');
 
 exports.home = (req, res) => {
     if (req.session.user) {
-        res.render('home-dashboard', { username: req.session.user.username });
+        res.render('home-dashboard', { username: req.session.user.username, avatar: req.session.user.avatar });
     } else {
         res.render('home-guest', { errors: req.flash('errors'), regError: req.flash('regError') });
     }
@@ -11,7 +11,7 @@ exports.home = (req, res) => {
 exports.register = (req, res) => {
     let user = new User(req.body);
     user.register().then(() => {
-        req.session.user = { username: user.data.username }
+        req.session.user = { avatar: user.avatar, username: user.data.username }
         req.session.save(() => { res.redirect('/') })
     }).catch((regErrors) => {
         regErrors.forEach((error) => {
@@ -27,7 +27,7 @@ exports.login = (req, res) => {
 
     user.login()
         .then(result => {
-            req.session.user = { username: user.data.username };
+            req.session.user = { avatar: user.avatar, username: user.data.username };
             req.session.save(function() {
                 res.redirect('/');
             });
