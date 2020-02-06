@@ -10,15 +10,16 @@ exports.home = (req, res) => {
 
 exports.register = (req, res) => {
     let user = new User(req.body);
-    user.register();
-    if (user.errors.length) {
-        user.errors.forEach((error) => {
+    user.register().then(() => {
+        req.session.user = { username: user.data.username }
+        req.session.save(() => { res.redirect('/') })
+    }).catch((regErrors) => {
+        regErrors.forEach((error) => {
             req.flash('regError', error)
         });
         req.session.save(() => { res.redirect('/') })
-    } else {
-        res.send('Congrats, there are no errors.');
-    }
+    })
+
 };
 
 exports.login = (req, res) => {
