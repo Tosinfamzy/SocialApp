@@ -9,5 +9,6 @@ router.post('/register', usersController.register);
 router.post('/login', usersController.login);
 router.post('/logout', usersController.logout);
 router.get('/create-post', usersController.mustBeLoggedIn, postController.viewCreateScreen);
+router.post('/create-post', usersController.mustBeLoggedIn, postController.create)
 
 module.exports = router;
