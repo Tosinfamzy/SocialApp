@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Post = require('../models/Post');
 exports.mustBeLoggedIn = (req, res, next) => {
     if (req.session.user) {
         next()
@@ -50,3 +51,27 @@ exports.logout = async(req, res) => {
     await req.session.destroy();
     res.redirect('/');
 };
+
+exports.ifUserExist = (req, res, next) => {
+    User.findByUsername(req.params.username)
+        .then((userDocument) => {
+            req.profileUser = userDocument
+            next()
+        })
+        .catch(() => {
+            res.render('404')
+        })
+}
+exports.profilePostScreen = (req, res) => {
+    // console.log('here' + req.profileUser);
+    Post.findPostById(req.profileUser.data._id).then((posts)=>{
+        res.render('profile', {
+            posts:posts,
+            profileUsername: req.profileUser.data.username,
+            profileAvatar: req.profileUser.avatar,
+        })
+    }).catch(()=>{
+        res.render('404')
+    })
+    
+}

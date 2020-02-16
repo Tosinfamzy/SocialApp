@@ -10,5 +10,7 @@ router.post('/login', usersController.login);
 router.post('/logout', usersController.logout);
 router.get('/create-post', usersController.mustBeLoggedIn, postController.viewCreateScreen);
 router.post('/create-post', usersController.mustBeLoggedIn, postController.create)
+router.get('/post/:id', postController.viewSingle)
+router.get('/profile/:username', usersController.ifUserExist, usersController.profilePostScreen)
 
 module.exports = router;
