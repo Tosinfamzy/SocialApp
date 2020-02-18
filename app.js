@@ -14,13 +14,14 @@ let sessionOptions = session({
 app.use(sessionOptions)
 app.use(flash())
 app.use(function(req, res, next) {
-    if (req.session.user) {
-        req.visitorId = req.session.user._id
-    } else {
-        req.visitorId = 0
-    }
-    res.locals.user = req.session.user;
-    next();
+    res.locals.errors = req.flash("errors")
+
+    res.locals.success = req.flash("success")
+
+    if (req.session.user) { req.visitorId = req.session.user._id } else { req.visitorId = 0 }
+
+    res.locals.user = req.session.user
+    next()
 })
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }))

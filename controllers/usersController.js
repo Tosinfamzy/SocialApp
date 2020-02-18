@@ -13,7 +13,7 @@ exports.home = (req, res) => {
     if (req.session.user) {
         res.render('home-dashboard', { username: req.session.user.username, avatar: req.session.user.avatar });
     } else {
-        res.render('home-guest', { errors: req.flash('errors'), regError: req.flash('regError') });
+        res.render('home-guest', { regError: req.flash('regError') });
     }
 };
 
