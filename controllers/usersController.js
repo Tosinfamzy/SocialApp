@@ -13,7 +13,7 @@ exports.home = (req, res) => {
     if (req.session.user) {
         res.render('home-dashboard', { username: req.session.user.username, avatar: req.session.user.avatar });
     } else {
-        res.render('home-guest', { errors: req.flash('errors'), regError: req.flash('regError') });
+        res.render('home-guest', { regError: req.flash('regError') });
     }
 };
 
@@ -64,14 +64,14 @@ exports.ifUserExist = (req, res, next) => {
 }
 exports.profilePostScreen = (req, res) => {
     // console.log('here' + req.profileUser);
-    Post.findPostById(req.profileUser.data._id).then((posts)=>{
+    Post.findByAuthorId(req.profileUser.data._id).then((posts) => {
         res.render('profile', {
-            posts:posts,
+            posts: posts,
             profileUsername: req.profileUser.data.username,
             profileAvatar: req.profileUser.avatar,
         })
-    }).catch(()=>{
+    }).catch(() => {
         res.render('404')
     })
-    
+
 }
