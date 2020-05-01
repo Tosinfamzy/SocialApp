@@ -14,5 +14,6 @@ router.get('/post/:id', postController.viewSingle)
 router.get('/profile/:username', usersController.ifUserExist, usersController.profilePostScreen)
 router.get('/post/:id/edit', usersController.mustBeLoggedIn, postController.viewEditScreen)
 router.post('/post/:id/edit', usersController.mustBeLoggedIn, postController.edit)
+router.post('/post/:id/delete', usersController.mustBeLoggedIn, postController.delete)
 
 module.exports = router;
