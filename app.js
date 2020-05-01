@@ -3,6 +3,7 @@ const router = require('./router')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const flash = require('connect-flash')
+const markdown = require('marked')
 let app = express();
 let sessionOptions = session({
     secret: "This is just for testing",
@@ -14,6 +15,9 @@ let sessionOptions = session({
 app.use(sessionOptions)
 app.use(flash())
 app.use(function(req, res, next) {
+    res.locals.filterUserHTML = function(content) {
+        return markdown(content)
+    }
     res.locals.errors = req.flash("errors")
 
     res.locals.success = req.flash("success")
