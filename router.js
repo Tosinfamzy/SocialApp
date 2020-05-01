@@ -12,7 +12,7 @@ router.get('/create-post', usersController.mustBeLoggedIn, postController.viewCr
 router.post('/create-post', usersController.mustBeLoggedIn, postController.create)
 router.get('/post/:id', postController.viewSingle)
 router.get('/profile/:username', usersController.ifUserExist, usersController.profilePostScreen)
-router.get('/post/:id/edit', postController.viewEditScreen)
-router.post('/post/:id/edit', postController.edit)
+router.get('/post/:id/edit', usersController.mustBeLoggedIn, postController.viewEditScreen)
+router.post('/post/:id/edit', usersController.mustBeLoggedIn, postController.edit)
 
 module.exports = router;
