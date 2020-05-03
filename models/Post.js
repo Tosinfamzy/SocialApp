@@ -147,5 +147,18 @@ Post.delete = function(postid, currentUserId) {
         }
     })
 }
+Post.search = function(searchTerm) {
+    return new Promise(async(resolve, reject) => {
+        if (typeof(searchTerm) == 'string') {
+            let posts = await Post.reusablePostQuery([
+                { $match: { $text: { $search: searchTerm } } },
+                { $sort: { $score: { $meta: 'textScore' } } }
+            ])
+            resolve(posts)
+        } else {
+            reject()
+        }
+    })
+}
 
 module.exports = Post
