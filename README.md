@@ -21,10 +21,14 @@ In your browser - http://localhost:${PORT}/
 - Create Read Updata Delete Post
 - Post Authorization and Authentication
 - Live Search Post across the site for all users
-
-### Upcoming features (Currently working on)
 - Search and follow users
 - Chat room
+
+### Upcoming features (Currently working on)
+- Creat a profile (incl. profile photo, bio) 
+- Ability to post photos or normal text posts 
+- Hashtag option when they are posting so users can follow hashtags
+- Suggest profiles based on follows
 
 ### Potential Upgrades
 - Use a frontend Framework
