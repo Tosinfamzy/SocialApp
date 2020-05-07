@@ -89,7 +89,7 @@ exports.profilePostScreen = (req, res) => {
     // console.log('here' + req.profileUser);
     Post.findByAuthorId(req.profileUser.data._id).then((posts) => {
         res.render('profile', {
-            currentPage: "followers",
+            currentPage: "posts",
             posts: posts,
             profileUsername: req.profileUser.data.username,
             profileAvatar: req.profileUser.avatar,
