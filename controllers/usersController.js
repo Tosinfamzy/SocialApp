@@ -1,12 +1,23 @@
 const User = require('../models/User');
 const Post = require('../models/Post');
 const Follow = require('../models/Follow');
+const jwt = require('jsonwebtoken');
+
 exports.mustBeLoggedIn = (req, res, next) => {
     if (req.session.user) {
         next()
     } else {
         req.flash('errors', 'you mucst be logged in to perform that action')
         req.session.save(() => { res.redirect('/') })
+    }
+}
+
+exports.apimustBeLoggedIn = (req, res, next) => {
+    try {
+        req.apiUser = jwt.verify(req.body.token, process.env.JWTSECRET)
+        next()
+    } catch (error) {
+        res.json('Token not valid')
     }
 }
 
@@ -67,6 +78,18 @@ exports.login = (req, res) => {
         .catch(err => {
             req.flash('errors', err)
             req.session.save(() => { res.redirect('/') })
+        });
+};
+
+exports.apiLogin = (req, res) => {
+    let user = new User(req.body);
+
+    user.login()
+        .then(result => {
+            res.json(jwt.sign({ _id: user.data._id }, process.env.JWTSECRET, { expiresIn: '7d' }))
+        })
+        .catch(err => {
+            res.json('Sorry something went wrong')
         });
 };
 
@@ -142,4 +165,14 @@ exports.followingProfileScreen = async function(req, res) {
         res.render("404")
     }
 
+}
+
+exports.apiGetPostsByUsername = async function(req, res) {
+    try {
+        let author = User.findByUsername(req.params.username)
+        let post = await Post.findByAuthorId(author._id)
+        res.json(post)
+    } catch (error) {
+        res.json('User does not exist')
+    }
 }
