@@ -8,6 +8,10 @@ const sanitizeHTML = require('sanitize-html')
 const csrf = require('csurf')
 
 let app = express();
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+app.use('/api', require('./router-api'))
+
 let sessionOptions = session({
     secret: "This is just for testing",
     store: new MongoStore({ client: require('./db') }),
@@ -31,8 +35,6 @@ app.use(function(req, res, next) {
     next()
 })
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
 app.set('views', 'views');
 app.set('view engine', 'ejs')
 
